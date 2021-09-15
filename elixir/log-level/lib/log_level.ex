@@ -12,6 +12,12 @@ defmodule LogLevel do
   end
 
   def alert_recipient(level, legacy?) do
-    # Please implement the alert_recipient/2 function
+    case to_label(level, legacy?) do
+      :error -> :ops
+      :fatal -> :ops
+      :unknown when legacy? -> :dev1
+      :unknown -> :dev2
+      _ -> false
+    end
   end
 end
