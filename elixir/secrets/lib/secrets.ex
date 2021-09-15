@@ -22,7 +22,7 @@ defmodule Secrets do
   end
 
   def secret_xor(secret) do
-    &(&1 ^^^ secret)
+    &(Bitwise.bxor(&1, secret))
   end
 
   def secret_combine(secret_function1, secret_function2) do
