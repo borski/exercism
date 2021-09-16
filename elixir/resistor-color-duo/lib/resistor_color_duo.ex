@@ -17,6 +17,9 @@ defmodule ResistorColorDuo do
       white: 9
     }
     
-    color_map[Enum.at(colors, 0)] * 10 + color_map[Enum.at(colors, 1)]
+    colors
+    |> Enum.map(&(color_map[&1]))
+    |> Enum.take(2)
+    |> Integer.undigits
   end
 end
