@@ -8,7 +8,7 @@ defmodule Username do
       ?ö -> 'oe'
       ?ü -> 'ue'
       ?ß -> 'ss'
-      x when (x >= ?a and x <= ?z) or x === ?_ -> [x]
+      x when x in ?a..?z or x === ?_ -> [x]
       _ -> ''
     end ++ sanitize(rest)
   end
