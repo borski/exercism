@@ -6,6 +6,7 @@ defmodule CollatzConjecture do
     - if number is even, divide by 2
   """
   @spec calc(input :: pos_integer()) :: non_neg_integer()
-  def calc(input) do
-  end
+  def calc(1), do: 0
+  def calc(input) when is_integer(input) and input > 0 and rem(input, 2) === 0, do: 1 + calc(div(input, 2))
+  def calc(input) when is_integer(input) and input > 0, do: 1 + calc(input * 3 + 1)
 end
