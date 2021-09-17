@@ -1,21 +1,31 @@
 defmodule RPG.CharacterSheet do
+  defp ask(question), do: IO.gets(question <> "\n") |> String.trim
+
   def welcome() do
-    # Please implement the welcome/0 function
+    IO.puts("Welcome! Let's fill out your character sheet together.")
   end
 
   def ask_name() do
-    # Please implement the ask_name/0 function
+    ask("What is your character's name?")
   end
 
   def ask_class() do
-    # Please implement the ask_class/0 function
+    ask("What is your character's class?")
   end
 
   def ask_level() do
-    # Please implement the ask_level/0 function
+    ask("What is your character's level?") |> String.to_integer
   end
 
   def run() do
-    # Please implement the run/0 function
+    character = %{}
+    
+    welcome()
+
+    character = character |> Map.put(:name, ask_name())
+    character = character |> Map.put(:class, ask_class())
+    character = character |> Map.put(:level, ask_level())
+
+    IO.inspect(character, label: "Your character")
   end
 end
