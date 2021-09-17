@@ -17,15 +17,10 @@ defmodule RPG.CharacterSheet do
     ask("What is your character's level?") |> String.to_integer
   end
 
-  def run() do
-    character = %{}
-    
+  def run() do   
     welcome()
 
-    character = character |> Map.put(:name, ask_name())
-    character = character |> Map.put(:class, ask_class())
-    character = character |> Map.put(:level, ask_level())
-
-    IO.inspect(character, label: "Your character")
+    %{name: ask_name(), class: ask_class(), level: ask_level()}
+    |> IO.inspect(label: "Your character")
   end
 end
