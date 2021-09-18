@@ -6,35 +6,42 @@ defmodule ListOps do
   # `++`, `--`, `hd`, `tl`, `in`, and `length`.
 
   @spec length(list) :: non_neg_integer
-  def length(l) do
-  end
-
+  def length([]), do: 0
+  def length([_ | t]), do: 1 + ListOps.length(t)
+ 
   @spec reverse(list) :: list
-  def reverse(l) do
-  end
+  def reverse(list), do: ListOps.reverse(list, [])
+  def reverse([], reversed), do: reversed
+  def reverse([h | t], reversed), do: ListOps.reverse(t, [h | reversed])
 
   @spec map(list, (any -> any)) :: list
-  def map(l, f) do
-  end
+  def map([], _), do: []
+  def map([h | t], f), do: [f.(h) | ListOps.map(t, f)]
 
   @spec filter(list, (any -> as_boolean(term))) :: list
-  def filter(l, f) do
+  def filter([], _), do: []
+  def filter([h | t], f) do
+    if f.(h) do
+      [h | ListOps.filter(t, f)]
+    else
+      ListOps.filter(t, f)
+    end
   end
 
   @type acc :: any
   @spec foldl(list, acc, (any, acc -> acc)) :: acc
-  def foldl(l, acc, f) do
-  end
+  def foldl([], acc, _), do: acc
+  def foldl([h | t], acc, f), do: ListOps.foldl(t, f.(h, acc), f)
 
   @spec foldr(list, acc, (any, acc -> acc)) :: acc
-  def foldr(l, acc, f) do
-  end
+  def foldr([], acc, _), do: acc
+  def foldr([h | t], acc, f), do: f.(h, ListOps.foldr(t, acc, f))
 
   @spec append(list, list) :: list
-  def append(a, b) do
-  end
+  def append([], b), do: b
+  def append([h | t], b), do: [h | ListOps.append(t, b)]
 
   @spec concat([[any]]) :: [any]
-  def concat(ll) do
-  end
+  def concat([]), do: []
+  def concat([h | t]), do: ListOps.append(h, concat(t))
 end
