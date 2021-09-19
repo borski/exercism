@@ -15,13 +15,7 @@ defmodule Hamming do
   def hamming_distance(strand1, strand2) do
     {
       :ok,
-      Enum.reduce(
-        Enum.zip(strand1, strand2),
-        0,
-        fn {a, b}, acc ->
-          if a !== b, do: acc + 1, else: acc
-        end
-      )
+      Enum.zip(strand1, strand2) |> Enum.count(fn {a, b} -> a !== b end)
     }
   end
 end
