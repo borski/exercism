@@ -9,6 +9,20 @@ defmodule Raindrops do
     just pass the number's digits straight through.
   """
   @spec convert(pos_integer) :: String.t()
+
   def convert(number) do
+    factors = %{
+      3 => "Pling",
+      5 => "Plang",
+      7 => "Plong"
+    }
+
+    ret =
+      Enum.filter(factors, fn {factor, _} -> divisible_by?(number, factor) end)
+      |> Enum.reduce("", fn {_, sound}, acc -> acc <> sound end)
+
+    if ret !== "", do: ret, else: Integer.to_string(number)
   end
+
+  defp divisible_by?(number, factor), do: rem(number, factor) === 0
 end
