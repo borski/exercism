@@ -10,6 +10,22 @@ defmodule PerfectNumbers do
   :deficient if the aliquot sum is less than `number`
   """
   @spec classify(number :: integer) :: {:ok, atom} | {:error, String.t()}
+  def classify(1), do: {:ok, :deficient}
+  def classify(number) when number < 1, do: {:error, "Classification is only possible for natural numbers."}
   def classify(number) do
+    asum = aliquot_sum(number)
+    cond do
+      asum == number -> {:ok, :perfect}
+      asum > number -> {:ok, :abundant}
+      asum < number -> {:ok, :deficient}
+    end
   end
+
+  defp aliquot_sum(number) do
+    1..number-1
+    |> Enum.filter(&factor?(&1, number))
+    |> Enum.sum()
+  end
+
+  defp factor?(factor, number), do: rem(number, factor) == 0
 end
