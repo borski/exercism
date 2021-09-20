@@ -14,5 +14,7 @@ defmodule Pangram do
 
   @spec pangram?(String.t()) :: boolean
   def pangram?(sentence) do
+    letters = sentence |> String.downcase() |> String.to_charlist()
+    Enum.all?(?a..?z, &(&1 in letters))
   end
 end
