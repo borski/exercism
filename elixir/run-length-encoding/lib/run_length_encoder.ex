@@ -14,17 +14,19 @@ defmodule RunLengthEncoder do
     |> Enum.map_join("", &encode_list/1)
   end
 
+  defp encode_list(chars) when length(chars) == 1, do: hd(chars)
+  defp encode_list(chars), do: "#{length(chars)}#{hd(chars)}"
+
   @spec decode(String.t()) :: String.t()
   def decode(""), do: ""
   def decode(string) do
     case Integer.parse(string) do
-      :error ->
-       String.first(string) <> decode(String.slice(string, 1..-1))
       {n, <<first::binary-size(1), rest::binary>>} -> 
         String.duplicate(first, n) <> decode(rest)
+
+      :error ->
+        <<first::binary-size(1), rest::binary>> = string
+        first <> decode(rest)
     end
   end
-
-  defp encode_list(chars) when length(chars) == 1, do: hd(chars)
-  defp encode_list(chars), do: "#{length(chars)}#{hd(chars)}"
 end
