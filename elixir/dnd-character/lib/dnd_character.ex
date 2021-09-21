@@ -13,13 +13,31 @@ defmodule DndCharacter do
 
   @spec modifier(pos_integer()) :: integer()
   def modifier(score) do
+    floor((score - 10) / 2)
   end
 
   @spec ability :: pos_integer()
   def ability do
+    rolls = for _ <- 1..4, do: :rand.uniform(6)
+
+    rolls
+    |> Enum.sort()
+    |> Enum.drop(1)
+    |> Enum.sum()
   end
 
   @spec character :: t()
   def character do
+    constitution = ability()
+
+    %__MODULE__{
+      strength: ability(),
+      dexterity: ability(),
+      constitution: constitution,
+      intelligence: ability(),
+      wisdom: ability(),
+      charisma: ability(),
+      hitpoints: 10 + modifier(constitution)
+    }
   end
 end
