@@ -3,7 +3,12 @@ defmodule Grains do
   Calculate two to the power of the input minus one.
   """
   @spec square(pos_integer()) :: {:ok, pos_integer()} | {:error, String.t()}
+  def square(number)
+    when number < 1
+    when number > 64, do: {:error, "The requested square must be between 1 and 64 (inclusive)"}
+  def square(1), do: {:ok, 1}
   def square(number) do
+    {:ok, Integer.pow(2, number - 1)}
   end
 
   @doc """
@@ -11,5 +16,11 @@ defmodule Grains do
   """
   @spec total :: {:ok, pos_integer()}
   def total do
+    {
+      :ok,
+      1..64
+      |> Enum.map(&Integer.pow(2, &1 - 1))
+      |> Enum.sum
+    }
   end
 end
