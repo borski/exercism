@@ -20,8 +20,8 @@ defmodule RunLengthEncoder do
     case Integer.parse(string) do
       :error ->
        String.first(string) <> decode(String.slice(string, 1..-1))
-      {n, rest} -> 
-        String.duplicate(String.first(rest), n) <> decode(String.slice(rest, 1..-1))
+      {n, <<first::binary-size(1), rest::binary>>} -> 
+        String.duplicate(first, n) <> decode(rest)
     end
   end
 
