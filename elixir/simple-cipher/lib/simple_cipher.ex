@@ -30,8 +30,7 @@ defmodule SimpleCipher do
   "abcabca". If the key is longer than the text, only use as many letters of it
   as are necessary.
   """
-  def encode(plaintext, key) do
-  end
+  def encode(plaintext, key), do: cipher(plaintext, key, :up)
 
   @doc """
   Given a `ciphertext` and `key`, decode each character of the `ciphertext` by
@@ -43,12 +42,33 @@ defmodule SimpleCipher do
   but you will go the opposite way, so "d" becomes "a", "w" becomes "t",
   etc..., depending on how much you shift the alphabet.
   """
-  def decode(ciphertext, key) do
+  def decode(ciphertext, key), do: cipher(ciphertext, key, :down)
+
+  defp cipher(text, key, dir) do
+    key
+    |> String.to_charlist()
+    |> Stream.cycle()
+    |> Enum.zip(String.to_charlist(text))
+    |> Enum.map(&shift(&1, dir))
+    |> to_string()
+  end
+
+  defp shift({key, char}, dir) when char in ?a..?z do
+    slide =
+      case dir do
+        :up -> char - ?a + key - ?a
+        :down -> char - key
+      end
+
+    ?a + Integer.mod(slide, 26)
   end
 
   @doc """
   Generate a random key of a given length. It should contain lowercase letters only.
   """
   def generate_key(length) do
+    Stream.repeatedly(fn -> Enum.random(?a..?z) end)
+    |> Enum.take(length)
+    |> List.to_string()
   end
 end
