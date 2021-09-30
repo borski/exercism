@@ -11,62 +11,65 @@ defmodule ComplexNumbers do
   Return the real part of a complex number
   """
   @spec real(a :: complex) :: float
-  def real(a) do
-  end
+  def real({a, _}), do: a
 
   @doc """
   Return the imaginary part of a complex number
   """
   @spec imaginary(a :: complex) :: float
-  def imaginary(a) do
-  end
+  def imaginary({_, b}), do: b
 
   @doc """
   Multiply two complex numbers
   """
   @spec mul(a :: complex, b :: complex) :: complex
-  def mul(a, b) do
-  end
+  def mul({a, b}, {c, d}), do: {a * c - b * d, b * c + a * d}
 
   @doc """
   Add two complex numbers
   """
   @spec add(a :: complex, b :: complex) :: complex
-  def add(a, b) do
-  end
+  def add({a, b}, {c, d}), do: {a + c, b + d}
 
   @doc """
   Subtract two complex numbers
   """
   @spec sub(a :: complex, b :: complex) :: complex
-  def sub(a, b) do
-  end
+  def sub({a, b}, {c, d}), do: {a - c, b - d}
 
   @doc """
   Divide two complex numbers
   """
   @spec div(a :: complex, b :: complex) :: complex
-  def div(a, b) do
+  def div({a, b}, {c, d}) do
+    {
+      (a * c + b * d) / (c * c + d * d),
+      (b * c - a * d) / (c * c + d * d)
+    }
   end
 
   @doc """
   Absolute value of a complex number
   """
   @spec abs(a :: complex) :: float
-  def abs(a) do
-  end
+  def abs({a, b}), do: :math.sqrt(a * a + b * b)
 
   @doc """
   Conjugate of a complex number
   """
   @spec conjugate(a :: complex) :: complex
-  def conjugate(a) do
-  end
+  def conjugate({a, b}), do: {a, -b}
 
   @doc """
   Exponential of a complex number
   """
   @spec exp(a :: complex) :: complex
-  def exp(a) do
+  def exp({a, b}) do
+    ex = :math.exp(a)
+
+    {
+      ex * :math.cos(b),
+      ex * :math.sin(b)
+    }
   end
 end
