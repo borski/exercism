@@ -4,5 +4,6 @@ defmodule SquareRoot do
   """
   @spec calculate(radicand :: pos_integer) :: pos_integer
   def calculate(radicand) do
+    Enum.find(1..div(radicand, 2), &(&1 * &1 == radicand))
   end
 end
