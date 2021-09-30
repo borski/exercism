@@ -6,6 +6,18 @@ defmodule Dominoes do
   possible to make a full chain
   """
   @spec chain?(dominoes :: [domino] | []) :: boolean
-  def chain?(dominoes) do
+
+  def chain?([]), do: true
+  def chain?([domino | dominoes]), do: next(domino, dominoes)
+
+  defp next({x, y}, []), do: x == y
+  defp next(_, []), do: false
+
+  defp next({first, last}, bag) do
+    Enum.any?(bag, fn
+      next_domino = {^last, y} -> next({first, y}, List.delete(bag, next_domino))
+      next_domino = {y, ^last} -> next({first, y}, List.delete(bag, next_domino))
+      _ -> false
+    end)
   end
 end
