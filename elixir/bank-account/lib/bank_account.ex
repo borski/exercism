@@ -13,13 +13,16 @@ defmodule BankAccount do
   """
   @spec open_bank() :: account
   def open_bank() do
+    {:ok, account} = Agent.start_link(fn -> 0 end)
+    account
   end
 
   @doc """
   Close the bank. Makes the account unavailable.
   """
-  @spec close_bank(account) :: none
+  @spec close_bank(account) :: :ok
   def close_bank(account) do
+    Agent.stop(account)
   end
 
   @doc """
@@ -27,6 +30,9 @@ defmodule BankAccount do
   """
   @spec balance(account) :: integer
   def balance(account) do
+    try_op(account, fn ->
+      Agent.get(account, fn balance -> balance end)
+    end)
   end
 
   @doc """
@@ -34,5 +40,16 @@ defmodule BankAccount do
   """
   @spec update(account, integer) :: any
   def update(account, amount) do
+    try_op(account, fn ->
+      Agent.update(account, fn balance -> balance + amount end)
+    end)
+  end
+
+  defp try_op(account, op) do
+    if Process.alive?(account) do
+      op.()
+    else
+      {:error, :account_closed}
+    end
   end
 end
